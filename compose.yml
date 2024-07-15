@@ -1,0 +1,3 @@
+include:
+  - dighosp-docs/compose.yml
+  - nginx/compose.yml

@@ -1,0 +1,7 @@
+services:
+  webproxy:
+    image: nginx:alpine-slim
+    volumes:
+      - "./default.conf:/etc/nginx/conf.d/default.conf:ro"
+    ports:
+      - "80:80"

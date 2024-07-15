@@ -13,8 +13,6 @@ To resolve this, execute the following script:
 ```bash
 git commit -a -m "Saving my work, just in case"
 git branch my-new-branch
-
-git checkout main
 git fetch origin
 git reset --hard origin/main
 ```

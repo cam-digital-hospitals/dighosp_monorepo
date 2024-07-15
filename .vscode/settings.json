@@ -1,6 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "docs/source"
+        "dighosp-docs/source"
     ],
     "editor.wordWrapColumn": 100,
     "[markdown]": {

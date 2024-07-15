@@ -9,15 +9,18 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get -y dist-upgrade && apt-get -y install gcc make
 
-WORKDIR /docs
+WORKDIR /dighosp-docs
 
-COPY . .
-RUN poetry install  --no-interaction --no-ansi
+COPY ./pyproject.toml /dighosp-docs/pyproject.toml
+RUN poetry install --no-interaction --no-ansi
+
+COPY ./source/ /dighosp-docs/source/
+COPY ./Makefile /dighosp-docs/Makefile
 RUN poetry run make html
 
 ########################################################
 
 FROM joseluisq/static-web-server
-COPY --from=builder /docs/build/html /public
+COPY --from=builder /dighosp-docs/build/html /public
 
 EXPOSE 80

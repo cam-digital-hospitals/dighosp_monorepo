@@ -1,0 +1,9 @@
+# Docker compose file for the "docs" subproject
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "80:80"

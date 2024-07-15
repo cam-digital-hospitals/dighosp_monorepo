@@ -1,0 +1,15 @@
+{
+    "python.analysis.extraPaths": [
+        "docs/source"
+    ],
+    "editor.wordWrapColumn": 100,
+    "[markdown]": {
+        "editor.wordWrap": "bounded"
+    },
+    "myst.preview.extensions": [
+        "colon_fence",
+        "tasklist",
+        "deflist",
+        "dollarmath"
+    ],
+}

@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "dighosp-des"
+version = "0.1.0a0"
+description = ""
+authors = ["Yin-Chi Chan <ycc39@cam.ac.uk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+openpyxl = "^3.1.5"
+salabim = "^24.0.9.post0"
+greenlet = "^3.0.3"
+pandas = "^2.2.2"
+scipy = "^1.14.0"
+dacite = "^1.8.1"
+pydantic = "^2.8.2"
+pymongo = "^4.8.0"
+fastapi = "^0.111.1"
+redis = "^5.0.7"
+rq = "^1.16.2"
+python-dotenv = "^1.0.1"
+singleton-decorator = "^1.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^3.2.5"
+erdantic = "^1.0.3"
+ipykernel = "^6.29.5"
+matplotlib = "^3.9.1"
+plotly = "^5.22.0"
+requests = "^2.32.3"
+nbformat = "^5.10.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

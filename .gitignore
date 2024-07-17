@@ -1,3 +1,8 @@
-poetry.lock
-build/
 .vscode/
+
+poetry.lock
+.venv
+__pycache__
+
+*secret*
+~$*.xlsx

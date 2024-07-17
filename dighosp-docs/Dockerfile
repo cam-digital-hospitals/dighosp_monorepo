@@ -21,6 +21,6 @@ RUN poetry run make html
 ########################################################
 
 FROM joseluisq/static-web-server
-COPY --from=builder /dighosp-docs/build/html /public
+ENV SERVER_HOST=0.0.0.0
 
-EXPOSE 80
+COPY --from=builder /dighosp-docs/build/html /public

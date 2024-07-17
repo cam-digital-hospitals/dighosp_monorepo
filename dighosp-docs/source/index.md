@@ -14,6 +14,7 @@ will build and serve these docs at `http://localhost:80`.
 
 - [Overview](project:./modules/overview.md)
 - DES (discrete event simulation)
+    - [API docs (Swagger)](/api/des/docs){.external}
 - BIM (building information modelling)
 - Asset status
 - Staff scheduling

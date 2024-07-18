@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "dighosp-example"
+version = "0.1.0a0"
+description = ""
+authors = ["Yin-Chi Chan <ycc39@cam.ac.uk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+line_length = 100
+color_output = true
+
+[tool.autopep8]
+max_line_length = 100

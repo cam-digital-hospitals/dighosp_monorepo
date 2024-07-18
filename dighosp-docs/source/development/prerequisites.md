@@ -65,3 +65,6 @@ For convienience, we add an alias to return the root directory of the project:
 git config --global alias.root 'rev-parse --show-toplevel'
  ```
  
+ ## Secrets folder
+
+ Obtain a copy of the `secrets/` folder from a repository maintainer and place at the root of the repository.  This folder contains passwords and other information not to be shared on GitHub.

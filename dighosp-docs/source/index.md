@@ -13,7 +13,8 @@ will build and serve these docs at `http://localhost:80`.
 ## Modules
 
 - [Overview](project:./modules/overview.md)
-- DES (discrete event simulation)
+- Frontend server
+- [DES (discrete event simulation)](project:./modules/des.md)
     - [API docs (Swagger)](/api/des/docs){.external}
 - BIM (building information modelling)
 - Asset status
@@ -22,16 +23,21 @@ will build and serve these docs at `http://localhost:80`.
 
 ## Development
 
-- [](project:./development/prerequisites.md)
-- Code standards
-    - Python (isort, autopep8, pylint)
-- .env file usage
+- <project:./development/prerequisites.md>
+- **Code standards**
+    - [Python (isort, autopep8, pylint)](project:./development/code_python.md)
+    - Javascript/Typescript
+    - TOML/YAML
+- <project:./development/env.md>
 
 ## Deployment
 
-- Docker
-- K8s and Helm
+- <project:./docker.md>
 - Reverse proxy service
+
+## <project:./roadmap.md>
+
+## <project:./changelog.md>
 
 :::{toctree}
 :hidden:
@@ -44,6 +50,7 @@ will build and serve these docs at `http://localhost:80`.
 :caption: Modules
 
 modules/overview
+DES <modules/des>
 :::
 
 :::{toctree}
@@ -51,10 +58,27 @@ modules/overview
 :caption: Development
 
 development/prerequisites
+development/code_python
+development/env
 :::
 
 :::{toctree}
 :hidden:
 :caption: Deployment
 
+docker
+:::
+
+:::{toctree}
+:hidden:
+:caption: Roadmap
+
+roadmap
+:::
+
+:::{toctree}
+:hidden:
+:caption: Changelog
+
+changelog
 :::

@@ -4,5 +4,4 @@ services:
   des-api:
     environment:
       FASTAPI_ROOT: "/api/des"
-    ports: !override
-      - "11888:8000"
+    ports: !reset

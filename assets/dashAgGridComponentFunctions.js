@@ -18,7 +18,7 @@ dagcomponentfuncs.des_result_link = function (props) {
     }
     return React.createElement(
         'a',
-        { href: '/des/result/' + props.value },
+        { href: 'des/result/' + props.value },
         'Result'
     );
 };

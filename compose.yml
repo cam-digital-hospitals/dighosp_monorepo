@@ -1,6 +1,7 @@
 include:
   - dighosp-docs/compose.yml
   - dighosp-des/compose.yml
+  - dighosp-frontend/compose.yml
   - nginx/compose.yml
 
 services:

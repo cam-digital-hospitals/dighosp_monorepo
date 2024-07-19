@@ -7,6 +7,7 @@ from tempfile import NamedTemporaryFile
 from typing import Annotated, Optional, Sequence
 
 import pydantic as pyd
+import orjson
 from bson import ObjectId
 from fastapi import FastAPI, File, Form, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
@@ -183,7 +184,7 @@ def sim_replication(job_id: ObjectIdStr, idx: int) -> ObjectId:
         model.run()
         output = model.result_dump()
 
-        output_bytes = bytes(json.dumps(output), encoding='utf-8')
+        output_bytes = orjson.dumps(output)
 
         fs = GridFS(client['sim'])
         obj_id = fs.put(output_bytes)
@@ -279,4 +280,4 @@ def get_result(job_id: ObjectIdStr, idx: int) -> dict[str, dict]:
             )
 
         fs = GridFS(client['sim'])
-        return json.load(fs.get(ObjectId(result_id)))
+        return orjson.loads(fs.get(ObjectId(result_id)).read())

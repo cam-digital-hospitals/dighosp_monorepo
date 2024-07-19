@@ -14,7 +14,7 @@ services:
     volumes:
       - "./dighosp_des:/app/dighosp_des:rw"
     ports:
-      - 8000:8000
+      - "8000:8000"
     secrets:
       - mongo-root-pw
     stop_grace_period: 3s

@@ -3,7 +3,7 @@
 from typing import Sequence
 
 import dash_bootstrap_components as dbc
-from dash import dcc, html
+from dash import dcc, html, get_relative_path
 from dash_compose import composition
 
 
@@ -20,7 +20,7 @@ def simple_link_card(href: str, title: str, text: str, **kwargs):
                 yield text
     if disabled:
         return card
-    return dcc.Link(card, href=href)
+    return dcc.Link(card, href=get_relative_path(href))
 
 
 def breadcrumb(labels: Sequence[str], paths: Sequence[str]):
@@ -41,6 +41,7 @@ def breadcrumb(labels: Sequence[str], paths: Sequence[str]):
 
     def crumbs(labels, paths):
         urls = list('/' + s for s in map('/'.join, list(paths[:n] for n in range(len(paths)+1))))
+        urls = [get_relative_path(s) for s in urls]
         x = [crumb(*args) for args in list(zip(labels, urls))]
         del x[-1]['href']
         x[-1]['active'] = True

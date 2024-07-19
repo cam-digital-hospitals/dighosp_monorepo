@@ -19,6 +19,7 @@ requests = "^2.32.3"
 python-dotenv = "^1.0.1"
 toml = "^0.10.2"
 orjson = "^3.10.6"
+gunicorn = "^22.0.0"
 
 
 [tool.poetry.group.dev.dependencies]

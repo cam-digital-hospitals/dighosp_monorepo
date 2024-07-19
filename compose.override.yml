@@ -5,3 +5,7 @@ services:
     environment:
       FASTAPI_ROOT: "/api/des"
     ports: !reset
+  frontend:
+    environment:
+      DASH_BASE_PATHNAME: "/frontend/"
+    # ports: !reset

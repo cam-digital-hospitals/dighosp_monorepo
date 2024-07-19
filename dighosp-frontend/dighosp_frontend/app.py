@@ -1,7 +1,5 @@
 """Main module for the front-end."""
 
-from pathlib import Path
-
 import dash
 import dash_bootstrap_components as dbc
 from dash import html
@@ -11,7 +9,10 @@ from dighosp_frontend import conf
 
 app = dash.Dash(external_stylesheets=[dbc.themes.FLATLY],
                 use_pages=True, suppress_callback_exceptions=True,
-                assets_folder=conf.ASSETS_DIRNAME)
+                assets_folder=conf.ASSETS_DIRNAME,
+                routes_pathname_prefix=conf.BASE_PATH,
+                requests_pathname_prefix=conf.BASE_PATH)
+server = app.server
 
 
 @composition
@@ -23,13 +24,13 @@ def app_main():
     ) as ret:
         with dbc.NavbarSimple(
             brand='Digital Hospitals Demo',
-            brand_href='/#',
+            brand_href=dash.get_relative_path('/#'),
             color='primary',
             dark=True,
             fluid=True
         ):
             with dbc.NavItem():
-                with dbc.NavLink(href='/#'):
+                with dbc.NavLink(href=dash.get_relative_path('/#')):
                     yield "Home"
         yield dash.page_container
     return ret
@@ -37,5 +38,7 @@ def app_main():
 
 app.layout = app_main()
 
+# Runs in Debug mode if this file is run directly.
+# In production, this is not executed.
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run(debug=True)

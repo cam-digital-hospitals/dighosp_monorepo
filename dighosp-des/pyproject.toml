@@ -20,6 +20,7 @@ redis = "^5.0.7"
 rq = "^1.16.2"
 python-dotenv = "^1.0.1"
 singleton-decorator = "^1.0.0"
+orjson = "^3.10.6"
 
 
 [tool.poetry.group.dev.dependencies]

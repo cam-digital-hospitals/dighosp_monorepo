@@ -35,10 +35,13 @@ This website contains the internal documentation for the [Digital Hospitals proj
 
 ## <project:./changelog.md>
 
+<!-- Use hack to enable external relative link, see
+https://github.com/sphinx-doc/sphinx/issues/701, https://stackoverflow.com/a/31820846 -->
 :::{toctree}
 :hidden:
 
 🏠 Home <self>
+🔗Frontend </#http://>
 :::
 
 :::{toctree}

@@ -16,7 +16,7 @@ RUN poetry install --no-interaction --no-ansi
 
 COPY ./source/ /dighosp-docs/source/
 COPY ./Makefile /dighosp-docs/Makefile
-RUN poetry run make html
+RUN poetry run make html SPHINXOPTS="-W --keep-going -n"
 
 ########################################################
 

@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Digital Hospitals - Internal documentation'
+project = 'Digital Hospitals \u2014 Internal documentation'
 copyright = '2024, Digital Hospitals group, Institute for Manufacturing'
 author = 'Yin Chi Chan; Anandarup Mukherjee; Rohit Krishnan'
 release = '0.1.0a0'
@@ -31,7 +31,6 @@ myst_enable_extensions = [
 
 templates_path = ['_templates']
 exclude_patterns = []
-
 
 
 # -- Options for HTML output -------------------------------------------------

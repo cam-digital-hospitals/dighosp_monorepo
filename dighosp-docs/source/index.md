@@ -1,14 +1,6 @@
 # Digital Hospitals project
 
-This website contains the internal documentation for the Digital Hospitals project by the Institute for Manufacturing, the University of Cambridge.
-
-:::{admonition} Serving these docs
-:class: tip
-
-Executing
-`cd dighosp-docs && docker compose build && docker compose up -d`{l=bash}
-will build and serve these docs at `http://localhost:80`.
-:::
+This website contains the internal documentation for the [Digital Hospitals project](/){.external} by the Institute for Manufacturing, the University of Cambridge.
 
 ## Modules
 

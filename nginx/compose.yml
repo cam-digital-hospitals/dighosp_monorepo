@@ -3,5 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - docs
+      - frontend
+      - mongo-express
+      - des-api
     ports:
       - "80:80"

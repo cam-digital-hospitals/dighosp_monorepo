@@ -1,0 +1,21 @@
+.rst-content h3 {
+    font-size: 110% !important;
+    margin-bottom: 8px !important;
+}
+
+.rst-content h4 {
+    font-size: 105% !important;
+    margin-bottom: 2px !important;
+}
+
+.rst-content h5 {
+    font-size: 100% !important;
+    margin-bottom: 0 !important;
+}
+
+.rst-content h6 {
+    font-size: 100% !important;
+    font-weight: normal !important;
+    font-style: italic;
+    margin-bottom: 0 !important;
+}

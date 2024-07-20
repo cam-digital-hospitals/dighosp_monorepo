@@ -13,9 +13,13 @@ will build and serve these docs at `http://localhost:80`.
 ## Modules
 
 - [Overview](project:./modules/overview.md)
-- Frontend server
+- <project:./modules/frontend.md>
+- <project:./modules/webproxy.md>
+
+### Backend services
+
 - [DES (discrete event simulation)](project:./modules/des.md)
-    - [API docs (Swagger)](/api/des/docs){.external}
+    - [🔗 API docs (Swagger)](/api/des/docs){.external}
 - BIM (building information modelling)
 - Asset status
 - Staff scheduling
@@ -50,7 +54,9 @@ will build and serve these docs at `http://localhost:80`.
 :caption: Modules
 
 modules/overview
-DES <modules/des>
+modules/frontend
+modules/webproxy
+DES service <modules/des>
 :::
 
 :::{toctree}

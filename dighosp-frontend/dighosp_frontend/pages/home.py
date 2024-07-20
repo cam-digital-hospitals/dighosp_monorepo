@@ -32,7 +32,9 @@ def layout():
             yield """\
 # Digital Hospitals demo
 
-**Authors: ** Digital Hospitals group, Institute for Manufacturing, University of Cambridge
+**Authors: ** [Digital Hospitals group](https://www.ifm.eng.cam.ac.uk/research/dial/\
+research-projects/current-projects/distributed-information-and-automation-laboratory/),
+Institute for Manufacturing, University of Cambridge
 
 This website provides a demonstrator for the Digital Hospitals platform for Addenbrooke's Hospital,
 Cambridge, using the Histopathology laboratory as an initial case study.

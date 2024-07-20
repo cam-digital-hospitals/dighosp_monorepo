@@ -3,11 +3,3 @@ href = "/des"
 name = "Simulation"
 description = "Discrete-event simulation of the histopathology lab."
 color = "#99c7ff"
-
-[bim]
-href = "/bim"
-name = "Building information modelling"
-description = """Compute runner times for the \
-                 histopathology processes based on the building layout."""
-color = "light"
-disabled = true

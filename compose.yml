@@ -27,6 +27,7 @@ services:
     image: mongo-express
     environment:
       ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_SITE_BASEURL: /mongoadmin
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD_FILE: /run/secrets/mongo-root-pw

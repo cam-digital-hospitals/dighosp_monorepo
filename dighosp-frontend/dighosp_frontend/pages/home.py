@@ -41,13 +41,13 @@ Cambridge, using the Histopathology laboratory as an initial case study.
 """
         with dbc.Container(fluid=True):
             with dbc.Row():
-                for card_data in toml.load(services_filename).values():
-                    card_data: dict
+                for service_data in toml.load(services_filename).values():
+                    service_data: dict
                     with dbc.Col(width='auto', class_name='mb-3'):
                         yield simple_link_card(
-                            href=card_data.pop('href'),
-                            title=card_data.pop('name'),
-                            text=card_data.pop('description'),
-                            **card_data
+                            href=service_data.pop('href'),
+                            title=service_data.pop('name'),
+                            text=service_data.pop('description'),
+                            **service_data
                         )
     return ret

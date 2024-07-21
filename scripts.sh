@@ -2,9 +2,26 @@
 #  DOCKER
 ###############
 
-alias docker-restart="pushd `git root`; docker compose up -d --build; popd"
-alias docker-down="pushd `git root`; docker compose down; popd"
 alias dprune="docker system prune --volumes"
+
+alias dev="docker compose -f `git root`/compose.dev.yml"
+alias prod="docker compose -f `git root`/compose.prod.yml"
+
+dlist() {
+    docker images "ghcr.io/cam-dig*/*:${@-latest}"
+}
+
+dpush-latest() {
+    docker images --format "{{.Repository}}:{{.Tag}}" "ghcr.io/cam-dig*/*:latest" | xargs -n1 docker push
+}
+
+dassign() {
+    docker images --format "{{.Repository}}" "ghcr.io/cam-dig*/*:latest" | sed 's/:latest//g' | xargs -I {} docker tag {} {}:$@
+}
+
+dpush-tag() {
+    docker image ls --format "{{.Repository}}:{{.Tag}}" "ghcr.io/cam-dig*/*:$@" | xargs -n1 docker push
+}
 
 ###############
 #  GIT

@@ -16,12 +16,12 @@ RUN cd /app && poetry install --no-interaction --no-ansi --without dev
 ######
 
 FROM python:3.12-slim as runtime
+LABEL org.opencontainers.image.source https://github.com/cam-digital-hospitals/dighosp_monorepo
 
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 COPY --from=builder /app/ /app/
+COPY /dighosp_des/ /app/dighosp_des/
 
-EXPOSE 8000
-
-CMD fastapi dev dighosp_des/api.py --host 0.0.0.0 --root-path ${FASTAPI_ROOT:-''}
+CMD fastapi run dighosp_des/api.py --host 0.0.0.0 --root-path ${FASTAPI_ROOT:-''}

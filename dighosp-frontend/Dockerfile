@@ -16,6 +16,7 @@ RUN cd /app && poetry install --no-interaction --no-ansi --without dev
 ######
 
 FROM python:3.12-slim as runtime
+LABEL org.opencontainers.image.source https://github.com/cam-digital-hospitals/dighosp_monorepo
 
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONUNBUFFERED=1

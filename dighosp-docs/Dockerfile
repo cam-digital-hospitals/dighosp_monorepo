@@ -21,6 +21,6 @@ RUN poetry run make html SPHINXOPTS="-W --keep-going -n"
 ########################################################
 
 FROM joseluisq/static-web-server
+LABEL org.opencontainers.image.source https://github.com/cam-digital-hospitals/dighosp_monorepo
 ENV SERVER_HOST=0.0.0.0
-
 COPY --from=builder /dighosp-docs/build/html /public

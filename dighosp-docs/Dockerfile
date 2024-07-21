@@ -20,7 +20,9 @@ RUN poetry run make html SPHINXOPTS="-W --keep-going -n"
 
 ########################################################
 
-FROM joseluisq/static-web-server
-LABEL org.opencontainers.image.source https://github.com/cam-digital-hospitals/dighosp_monorepo
+FROM joseluisq/static-web-server:2
+
+# Since upstream author set their own labels, don't add our own to avoid mixing metadata
+
 ENV SERVER_HOST=0.0.0.0
 COPY --from=builder /dighosp-docs/build/html /public

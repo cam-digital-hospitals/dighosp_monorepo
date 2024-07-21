@@ -31,7 +31,7 @@ We use FastAPI to provide backend services. The root path is provided when launc
 ```Dockerfile
 # Dockerfile
 
-CMD fastapi dev dighosp_des/api.py --host 0.0.0.0 --root-path ${FASTAPI_ROOT:-''}
+CMD fastapi run dighosp_des/api.py --host 0.0.0.0 --root-path ${FASTAPI_ROOT:-''}
 ```
 
 Then, in Nginx, a simple `proxy_pass` will suffice:

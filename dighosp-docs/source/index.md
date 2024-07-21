@@ -28,8 +28,8 @@ This website contains the internal documentation for the [Digital Hospitals proj
 
 ## Deployment
 
-- <project:./docker.md>
-- Reverse proxy service
+- <project:./deploy/docker.md>
+- <project:./deploy/proxy.md>
 
 ## <project:./roadmap.md>
 
@@ -67,7 +67,8 @@ development/env
 :hidden:
 :caption: Deployment
 
-docker
+deploy/docker
+deploy/proxy
 :::
 
 :::{toctree}

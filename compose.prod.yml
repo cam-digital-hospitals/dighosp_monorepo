@@ -52,7 +52,7 @@ services:
     stop_grace_period: 3s
   # MongoDB database
   mongo:
-    image: mongo:jammy
+    image: mongo:7.0-jammy
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo-root-pw
@@ -67,7 +67,7 @@ services:
       - mongo-root-pw
   # Admin portal for the local database.
   mongo-express:
-    image: mongo-express
+    image: mongo-express:1.0-18-alpine3.18  # mongo version, node version, linux version
     environment:
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_SITE_BASEURL: /mongoadmin
@@ -83,7 +83,7 @@ services:
       - mongo-pw
   # A separate database for managing worker tasks -- used by the 'rq' Python package.
   redis:
-    image: redis:7
+    image: redis:7.2
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       interval: 10s

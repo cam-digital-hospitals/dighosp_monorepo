@@ -17,7 +17,11 @@ RUN cd /app && poetry install --no-interaction --no-ansi --without dev
 ########################################
 
 FROM python:3.12-slim as runtime
+
+LABEL org.opencontainers.image.title="Digital Hospitals: Discrete-event Simulation Redis worker"
 LABEL org.opencontainers.image.source https://github.com/cam-digital-hospitals/dighosp_monorepo
+LABEL org.opencontainers.image.authors "Yin-Chi Chan <ycc39@cam.ac.uk>; \
+Rohit Krishnan <rk759@cam.ac.uk>; Anandarup Mukherjee <am2910@cam.ac.uk>"
 
 ENV PATH="/app/.venv/bin:$PATH"
 ENV PYTHONUNBUFFERED=1

@@ -2,14 +2,10 @@
 
 ## 0.1
 
-### 0.1.0
-
-- [x] Functioning frontend (based on existing [digital-hosp-frontend](https://github.com/cam-digital-hospitals/digital-hosp-frontend))
-- [x] Initial version of DES service (no integration with other services)
-
-
 ### 0.1.1
 - [ ] Migration from Docker Compose to Helm
+
+### 0.1.2
 - [ ] Modify DES service to precompute KPIs for improved page loading speed
     - Run automatically when all simulation replications finished, save results in database
     - New API endpoint for fetching precomputed KPI values from database; modify frontend accordingly
@@ -44,7 +40,6 @@
 - [ ] Add Scheduling service based on existing [digital-hosp-schedule](https://github.com/cam-digital-hospitals/digital-hosp-schedule)
     - Complete Todo list tasks
 - [ ] Integrate service with DES &mdash; e.g., resource scheduler processes based on received schedule definitions (`resource.capacity = schedule.capacity(time)`)
-
 
 **Other**
 

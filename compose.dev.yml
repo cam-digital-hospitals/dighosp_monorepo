@@ -49,12 +49,12 @@ services:
       DES_FASTAPI_URL: "http://webproxy/api/des"
     stop_grace_period: 3s
   # A worker for handling long-running BIM module tasks. Runs tasks sequentially from a queue.
-  redis-worker:
+  des-worker:
     scale: 8
-    image: "ghcr.io/cam-digital-hospitals/monorepo-redis-worker"
+    image: "ghcr.io/cam-digital-hospitals/monorepo-des-worker"
     build:
       context: ./dighosp-des
-      dockerfile: redis-worker.Dockerfile
+      dockerfile: des-worker.Dockerfile
     depends_on:
       - redis
     environment:

@@ -3,13 +3,22 @@
 ## 0.1
 
 ### 0.1.1
-- [ ] Migration from Docker Compose to Helm
+- Modify DES service to precompute KPIs for improved page loading speed
+    - Actually, a entire Plotly Figure object is saved in `dict` form
+    - [x] Run automatically when all simulation replications finished, save results in database
+    - [x] New API endpoint for fetching precomputed KPI values from database; modify frontend accordingly
+    - Keep or remove full simulation results???
+        - If kept, can recompute KPIs if changes are made (e.g. to add more KPIs to the output)
+        - [ ] Add version numbers to saved KPI values
 
 ### 0.1.2
-- [ ] Modify DES service to precompute KPIs for improved page loading speed
-    - Run automatically when all simulation replications finished, save results in database
-    - New API endpoint for fetching precomputed KPI values from database; modify frontend accordingly
-    - No need to store full simulation output in database???
+- [ ] Containerise the DES workers
+    - See: https://github.com/yinchi/container-queue
+    - Don't have the DES-API launch containers directly, instead create a Queue container with a FastAPI endpoint
+    - KPI worker should loop `sleep` until all simulation results have been uploaded to the database.
+        - Since the KPI worker will be the last in the queue (out of all containers related to a single simulation job), it will only have to wait for the last few containers.
+        - The worker cannot use `cntr.status` to check the status of the simulation containers as they will be removed upon completion.
+        - How to handle case where any simulation tasks fail?
 
 ## 0.2
 
@@ -34,6 +43,10 @@
 - [ ] Add Asset service based on existing [digital-hosp-asset](https://github.com/cam-digital-hospitals/digital-hosp-asset)
     - Database management for planned and scheduled outages (lifts, equipment, etc.)
 - [ ] Integrate Asset service with DES &mdash; e.g., select runner time based on lift state
+
+**Inventory / stock management**
+- [ ] Anand already has a backend for this???
+- [ ] Integrate with DES model
 
 **Staff scheduling**
 

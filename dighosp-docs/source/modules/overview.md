@@ -26,6 +26,7 @@ folder "Backend services" {
     [Asset] as "<i>Asset</i>\n<i>Status</i>" #white
     [Scheduling] as "<i>Staff</i>\n<i>Scheduling</i>" #white
     [Sensor] as "<i>Sensor</i>\n<i>Feed</i>" #white
+    [Inventory] as "<i>Inventory</i>/\n<i>Stock</i>\n<i>Management</i>" #white
   }
 }
 
@@ -40,10 +41,7 @@ folder "Backend services" {
 }
 
 () HTTP as "HTTP (port 80)"
-() HTTP2 as "port 8081\n(localhost\nonly)"
-
 HTTP -- webproxy
-HTTP2 -- [mongo-express]
 
 @enduml
 ```
@@ -53,5 +51,5 @@ The current Digital Hospitals infrastructure is implemented as a Docker Compose 
 Note that the above infrastructure does not include exposing port 80 beyond `localhost`. For development purposes, `ngrok` may suffice to provide a temporary public URL for the Digital Hospitals platform.
 
 ```{note}
-Future plans include migrating from Docker Compose to Helm charts and replacing the Nginx webproxy service with [Traefik](https://doc.traefik.io/traefik/).
+Future plans include replacing the Nginx webproxy service with [Traefik](https://doc.traefik.io/traefik/).
 ```

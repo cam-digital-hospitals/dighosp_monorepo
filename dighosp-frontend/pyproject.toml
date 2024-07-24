@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dighosp-frontend"
-version = "0.1.0"
+version = "0.1.1a0"
 description = ""
 authors = ["Yin-Chi Chan <ycc39@cam.ac.uk>"]
 readme = "README.md"

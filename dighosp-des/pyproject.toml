@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dighosp-des"
-version = "0.1.0"
+version = "0.1.1a0"
 description = ""
 authors = ["Yin-Chi Chan <ycc39@cam.ac.uk>"]
 readme = "README.md"
@@ -21,6 +21,7 @@ rq = "^1.16.2"
 python-dotenv = "^1.0.1"
 singleton-decorator = "^1.0.0"
 orjson = "^3.10.6"
+plotly = "^5.23.0"
 
 
 [tool.poetry.group.dev.dependencies]

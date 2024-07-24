@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dighosp-docs"
-version = "0.1.0"
+version = "0.1.1a0"
 description = "# Internal (developer) documentation"
 authors = ["Yin-Chi Chan <ycc39@cam.ac.uk>"]
 readme = "README.md"

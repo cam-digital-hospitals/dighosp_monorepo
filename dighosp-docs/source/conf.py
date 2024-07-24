@@ -9,8 +9,8 @@
 project = 'Digital Hospitals \u2014 Internal documentation'
 copyright = '2024, Digital Hospitals group, Institute for Manufacturing'
 author = 'Yin Chi Chan; Anandarup Mukherjee; Rohit Krishnan'
-version = '0.1.0'
-release = '0.1.0'
+version = '0.1.1'    # Displayed in sidebar
+release = '0.1.1a0'  # Full version number
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

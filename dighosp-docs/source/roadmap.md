@@ -9,7 +9,7 @@
     - [x] New API endpoint for fetching precomputed KPI values from database; modify frontend accordingly
     - Keep or remove full simulation results???
         - If kept, can recompute KPIs if changes are made (e.g. to add more KPIs to the output)
-        - [ ] Add version numbers to saved KPI values
+        - [x] Add version numbers to saved KPI values
 
 ### 0.1.2
 - [ ] Containerise the DES workers

@@ -36,11 +36,6 @@ ObjectIdStr = Annotated[str, AfterValidator(assert_object_id)]
 class SimJob(pyd.BaseModel):
     """A simulation job for the histopathology department model."""
 
-    # TODO: store precomputed KPIs
-    #
-    # For Redis Queue (RQ), we can use the `depends_on` argument of Job.enqueue()
-    # to compute the KPIs only when all simulation replications are completed sucessfully.
-
     config: Config = pyd.Field(
         title='Config file ID',
         description='Simulation configuration.'

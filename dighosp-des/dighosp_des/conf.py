@@ -6,6 +6,8 @@ the poetry-dotenv-plugin is installed (base environment) or by Docker Compose.
 
 import os
 import pathlib
+import toml
+from packaging.version import Version
 
 from dotenv import find_dotenv, load_dotenv
 
@@ -38,3 +40,15 @@ MONGO_CLIENT_ARGS = {
 
 REDIS_URL = env_get('REDIS_URL', env_get('REDIS_URL_PUBLIC'))
 REDIS_PORT = int(env_get('REDIS_PORT', env_get('REDIS_PORT_PUBLIC')))
+
+
+# APP VERSION
+APP_VERSION = None
+try:
+    data = toml.load('/app/pyproject.toml')
+    if 'project' in data and 'version' in data['project']:
+        APP_VERSION = Version(data['project']['version'])
+    elif 'tool' in data and 'poetry' in data['tool'] and 'version' in data['tool']['poetry']:
+        APP_VERSION = Version(data['tool']['poetry']['version'])
+except Exception:
+    pass  # Keep default of None

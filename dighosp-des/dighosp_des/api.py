@@ -17,7 +17,7 @@ from pydantic.functional_validators import AfterValidator
 from pymongo import MongoClient
 from rq import Queue
 
-from .conf import MONGO_CLIENT_ARGS
+from .conf import MONGO_CLIENT_ARGS, APP_VERSION
 from .config import Config
 from .kpis import lab_tats_fig, utilisation_fig, wips_fig
 from .model import Model
@@ -36,6 +36,12 @@ ObjectIdStr = Annotated[str, AfterValidator(assert_object_id)]
 class SimJob(pyd.BaseModel):
     """A simulation job for the histopathology department model."""
 
+    version: str = pyd.Field(
+        title='Version',
+        default=str(APP_VERSION)
+    )
+    """Version number of the dighosp_des package."""
+
     config: Config = pyd.Field(
         title='Config file ID',
         description='Simulation configuration.'
@@ -49,18 +55,18 @@ class SimJob(pyd.BaseModel):
     )
     """UNIX timestamp representing the submission time of the simulation job."""
 
-    results_ids: Sequence[Optional[ObjectIdStr]] = pyd.Field(
-        title='Result file Object IDs',
-    )
-    """Object IDs of the result files for the simulation job, one per simulation replication.
-    Results files are stored using GridFS."""
-
     results_kpi_obj_id: Optional[ObjectIdStr] = pyd.Field(
         title='Simulation results KPIs',
         default=None
     )
     """Pointer to a dict of Plotly objects, (e.g. `Figure`), for displaying KPIs. The objects are
     themselves encoded as dicts."""
+
+    results_ids: Sequence[Optional[ObjectIdStr]] = pyd.Field(
+        title='Result file Object IDs',
+    )
+    """Object IDs of the result files for the simulation job, one per simulation replication.
+    Results files are stored using GridFS."""
 
 
 class JobSubmitResult(pyd.BaseModel):

@@ -26,7 +26,7 @@ def layout(job_id: str):
     """Page layout"""
     with html.Div() as ret:
         yield breadcrumb(
-            labels=['🏠 Home', 'Process sim', f'Job {job_id}'],
+            labels=['🏠 Home', 'Process Simulation', f'Job {job_id}'],
             paths=['des', f'{job_id}']
         )
         yield html.H1("Digital Hospitals demo \u2014 Process Simulation")

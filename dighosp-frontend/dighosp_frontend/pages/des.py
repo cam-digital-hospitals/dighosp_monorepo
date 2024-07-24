@@ -63,6 +63,7 @@ def layout():
                 yield AgGrid(
                     id='ag_grid-des-list',
                     rowData=[],
+                    dashGridOptions = {"enableCellTextSelection": True, "ensureDomOrder": True},
                     defaultColDef={'sortable': False},
                     columnDefs=COLDEFS_SUBMITTED_JOBS,
                     columnSize='responsiveSizeToFit'

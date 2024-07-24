@@ -11,6 +11,7 @@ services:
       - des-api
     ports:
       - "80:80"
+  
   # FastAPI -- DES service
   des-api:
     image: "ghcr.io/cam-digital-hospitals/monorepo-des-api"
@@ -27,12 +28,14 @@ services:
     secrets:
       - mongo-root-pw
     stop_grace_period: 3s
+  
   # Internal documentation website
   docs:
     image: "ghcr.io/cam-digital-hospitals/monorepo-docs"
     build:
       context: ./dighosp-docs
       dockerfile: Dockerfile
+  
   # Public frontend (Dashboard)
   frontend:
     image: ghcr.io/cam-digital-hospitals/monorepo-frontend
@@ -48,6 +51,7 @@ services:
       ASSETS_DIRNAME: "/app/assets"
       DES_FASTAPI_URL: "http://webproxy/api/des"
     stop_grace_period: 3s
+  
   # A worker for handling long-running BIM module tasks. Runs tasks sequentially from a queue.
   des-worker:
     scale: 8
@@ -67,6 +71,7 @@ services:
     secrets:
       - mongo-root-pw
     stop_grace_period: 3s
+  
   # MongoDB database
   mongo:
     image: mongo:7.0-jammy
@@ -82,6 +87,9 @@ services:
       retries: 5
     secrets:
       - mongo-root-pw
+    ports:
+      - 27017:27017
+  
   # Admin portal for the local database.
   mongo-express:
     image: mongo-express:1.0-18-alpine3.18  # mongo version, node version, linux version
@@ -98,6 +106,7 @@ services:
     secrets:
       - mongo-root-pw
       - mongo-pw
+  
   # A separate database for managing worker tasks -- used by the 'rq' Python package.
   redis:
     image: redis:7.2
@@ -106,6 +115,7 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+
 volumes:
   dev-mongo:
 secrets:

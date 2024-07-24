@@ -6,8 +6,8 @@ from os import PathLike
 from tempfile import NamedTemporaryFile
 from typing import Annotated, Optional, Sequence
 
-import pydantic as pyd
 import orjson
+import pydantic as pyd
 from bson import ObjectId
 from fastapi import FastAPI, File, Form, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
@@ -15,20 +15,13 @@ from gridfs import GridFS
 from openpyxl import load_workbook
 from pydantic.functional_validators import AfterValidator
 from pymongo import MongoClient
+from rq import Queue
 
-from .conf import MONGO_PASSWORD, MONGO_PORT, MONGO_TIMEOUT_MS, MONGO_URL, MONGO_USER
+from .conf import MONGO_CLIENT_ARGS
 from .config import Config
+from .kpis import lab_tats_fig, utilisation_fig, wips_fig
 from .model import Model
 from .redis_worker import RedisSingleton
-
-CLIENT_ARGS = {
-    'host': MONGO_URL,
-    'port': MONGO_PORT,
-    'username': MONGO_USER,
-    'password': MONGO_PASSWORD,
-    'timeoutMS': MONGO_TIMEOUT_MS
-}
-"""Parameters for the MongoDB connection."""
 
 
 def assert_object_id(s: str):
@@ -66,6 +59,13 @@ class SimJob(pyd.BaseModel):
     )
     """Object IDs of the result files for the simulation job, one per simulation replication.
     Results files are stored using GridFS."""
+
+    results_kpi_obj_id: Optional[ObjectIdStr] = pyd.Field(
+        title='Simulation results KPIs',
+        default=None
+    )
+    """Pointer to a dict of Plotly objects, (e.g. `Figure`), for displaying KPIs. The objects are
+    themselves encoded as dicts."""
 
 
 class JobSubmitResult(pyd.BaseModel):
@@ -154,13 +154,16 @@ def new_sim(
     # Add simulation job to the 'sim' database
     results_ids: Sequence[Optional[ObjectIdStr]] = [None]*(conf.num_reps)
     job = SimJob(config=conf, results_ids=results_ids)
-    with MongoClient(**CLIENT_ARGS) as client:
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
         coll = client['sim']['sim_jobs']
         _id = coll.insert_one(job.model_dump()).inserted_id
 
+    jobs = []
     for idx in range(num_reps):
-        rds = RedisSingleton()
-        rds.work_queue.enqueue(sim_replication, ObjectIdStr(_id), idx)
+        queue: Queue = RedisSingleton().work_queue
+        job = queue.enqueue(sim_replication, ObjectIdStr(_id), idx)
+        jobs.append(job)
+    queue.enqueue(save_dash_objs, ObjectIdStr(_id), depends_on=jobs)
 
     return ObjectIdStr(_id)
 
@@ -171,7 +174,7 @@ def sim_replication(job_id: ObjectIdStr, idx: int) -> ObjectId:
     ObjectId."""
     # The actual simulation. A Dockerized version of this function may read the job_id
     # and idx from environment variables.
-    with MongoClient(**CLIENT_ARGS) as client:
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
         coll = client['sim']['sim_jobs']
         obj = coll.find_one({'_id': ObjectId(job_id)})
         if obj is None:
@@ -198,13 +201,67 @@ def sim_replication(job_id: ObjectIdStr, idx: int) -> ObjectId:
         return obj_id
 
 
+def save_dash_objs(job_id: ObjectIdStr):
+    """Compute a dict of figure data to display on the frontend later. Save the dict to the
+    MongoDB database."""
+    n = get_status(job_id).max_progress
+    data = [get_result(job_id, idx) for idx in range(n)]
+    kpi_objs = {
+        'utilisation': utilisation_fig(data),
+        'wip': wips_fig(data, wip='Total WIP'),
+        'tat': lab_tats_fig(data)
+    }
+    
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
+        coll = client['sim']['sim_jobs']
+        obj = coll.find_one({'_id': ObjectId(job_id)})
+        if obj is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No simulation job with ObjectId {job_id}."
+            )
+        
+        output_bytes = orjson.dumps(kpi_objs)
+
+        fs = GridFS(client['sim'])
+        obj_id = fs.put(output_bytes)
+        
+        coll.find_one_and_update(
+            filter={'_id': ObjectId(job_id)},
+            update={'$set': {'results_kpi_obj_id': str(obj_id)}}
+        )
+    return obj_id
+
+@app.get(
+    '/jobs/{job_id}/results/dash_objs',
+    summary='Get Plotly Dash objects'
+)
+def get_dash_objs(job_id: ObjectIdStr):
+    """Get the Plotly object data required for displaying KPIs on the frontend.
+
+    For example, a Plotly Figure can be serialised using `data = fig.to_dict()` and restored using
+    `fig = Figure(data)`.
+    """
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
+        coll = client['sim']['sim_jobs']
+        obj = coll.find_one({'_id': ObjectId(job_id)})
+        if obj is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No simulation job with ObjectId {job_id}."
+            )
+        
+        fs = GridFS(client['sim'])
+        obj_id = ObjectId(obj['results_kpi_obj_id'])
+        return json.load(fs.get(obj_id))
+
 @app.get(
     '/jobs',
     summary='List jobs'
 )
 def list_jobs() -> list[JobSummary]:
     """List all jobs."""
-    with MongoClient(**CLIENT_ARGS) as client:
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
         coll = client['sim']['sim_jobs']
         lst = list(coll.find({}))
         return [
@@ -223,7 +280,7 @@ def list_jobs() -> list[JobSummary]:
 )
 def get_status(job_id: ObjectIdStr) -> JobSummary:
     """Query the completion status of a simulation job."""
-    with MongoClient(**CLIENT_ARGS) as client:
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
         coll = client['sim']['sim_jobs']
         x = coll.find_one({'_id': ObjectId(job_id)})
         if x is None:
@@ -245,7 +302,7 @@ def get_status(job_id: ObjectIdStr) -> JobSummary:
 )
 def get_result_ids(job_id: ObjectIdStr) -> Sequence[Optional[ObjectIdStr]]:
     """Fetch the ObjectIds of the result files of a given simulation job."""
-    with MongoClient(**CLIENT_ARGS) as client:
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
         coll = client['sim']['sim_jobs']
         x = coll.find_one({'_id': ObjectId(job_id)})
         if x is None:
@@ -262,7 +319,7 @@ def get_result_ids(job_id: ObjectIdStr) -> Sequence[Optional[ObjectIdStr]]:
 )
 def get_result(job_id: ObjectIdStr, idx: int) -> dict[str, dict]:
     """Return the result of a single simulation replication."""
-    with MongoClient(**CLIENT_ARGS) as client:
+    with MongoClient(**MONGO_CLIENT_ARGS) as client:
         coll = client['sim']['sim_jobs']
         obj = coll.find_one({'_id': ObjectId(job_id)})
         if obj is None:

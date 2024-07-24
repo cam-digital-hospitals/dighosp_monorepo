@@ -1,0 +1,17 @@
+name: "Build developer docs"
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Sphinx Publisher
+      uses: Kjuly/sphinx-publisher@1.3.1
+      with:
+        source_root: "dighosp-docs/source/"
+        buid_root: "dighosp-docs/build/"

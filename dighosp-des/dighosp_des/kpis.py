@@ -1,22 +1,11 @@
-from itertools import chain
 import json
+from itertools import chain
 from math import ceil
 
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-
-from .conf import MONGO_PASSWORD, MONGO_PORT, MONGO_TIMEOUT_MS, MONGO_URL, MONGO_USER
-
-CLIENT_ARGS = {
-    'host': MONGO_URL,
-    'port': MONGO_PORT,
-    'username': MONGO_USER,
-    'password': MONGO_PASSWORD,
-    'timeoutMS': MONGO_TIMEOUT_MS
-}
-"""Parameters for the MongoDB connection."""
 
 
 def timeseries_mean(df: pd.DataFrame, time_col: str = 't', val_col: str = 'x'):
@@ -153,4 +142,4 @@ def lab_tats_fig(data):
     fig.update_layout(title='Lab turnaround time')
     fig.update_xaxes(title='Days')
     fig.update_yaxes(title='Probability')
-    return json.loads(fig.to_json())
+    return fig.to_dict()

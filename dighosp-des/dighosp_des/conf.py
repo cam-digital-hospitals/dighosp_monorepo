@@ -27,5 +27,14 @@ with open(MONGO_PASSWORD_FILE, 'r', encoding='utf-8') as fp:
 
 MONGO_TIMEOUT_MS = 5000
 
+MONGO_CLIENT_ARGS = {
+    'host': MONGO_URL,
+    'port': MONGO_PORT,
+    'username': MONGO_USER,
+    'password': MONGO_PASSWORD,
+    'timeoutMS': MONGO_TIMEOUT_MS
+}
+"""Parameters for a MongoDB connection."""
+
 REDIS_URL = env_get('REDIS_URL', env_get('REDIS_URL_PUBLIC'))
 REDIS_PORT = int(env_get('REDIS_PORT', env_get('REDIS_PORT_PUBLIC')))

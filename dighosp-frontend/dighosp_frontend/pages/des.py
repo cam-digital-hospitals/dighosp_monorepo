@@ -14,7 +14,7 @@ from dighosp_frontend.components import breadcrumb
 from dighosp_frontend.conf import DES_FASTAPI_URL
 
 dash.register_page(__name__, path='/des')
-LABELS = ['🏠 Home', 'Simulation']
+LABELS = ['🏠 Home', 'Process Simulation']
 PATHS = ['des']
 
 COLDEFS_SUBMITTED_JOBS = [

@@ -11,8 +11,9 @@ RUN apt-get update && apt-get -y dist-upgrade && apt-get -y install gcc make
 
 WORKDIR /dighosp-docs
 
-COPY ./pyproject.toml /dighosp-docs/pyproject.toml
-RUN poetry install --no-interaction --no-ansi
+COPY ./pyproject.toml /dighosp-docs/
+
+RUN poetry install --no-interaction --no-ansi --no-root
 
 COPY ./source/ /dighosp-docs/source/
 COPY ./Makefile /dighosp-docs/Makefile

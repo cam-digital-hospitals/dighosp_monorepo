@@ -9,9 +9,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get -y dist-upgrade && apt-get -y install gcc
 RUN mkdir /app
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml /app/
 
-RUN cd /app && poetry install --no-interaction --no-ansi --without dev
+RUN cd /app && poetry install --no-interaction --no-ansi --no-root --without dev
 
 ######
 

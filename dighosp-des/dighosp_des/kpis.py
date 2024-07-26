@@ -142,4 +142,4 @@ def lab_tats_fig(data):
     fig.update_layout(title='Lab turnaround time')
     fig.update_xaxes(title='Days')
     fig.update_yaxes(title='Probability')
-    return fig.to_dict()
+    return json.loads(fig.to_json())

@@ -36,6 +36,11 @@ Worker --> Orchestrator --: Job sucessful
 
 ==All workers completed==
 
+Orchestrator -> Worker : Precompute\nfigure / table\ndata
+activate Worker #77FF77
+Worker --> DB: KPI figure / table data
+Worker --> Orchestrator --: Job sucessful
+
 User -> API: Simulation query
 API -> DB: Fetch simulation status
 DB --> API: Simulation status (finished)
@@ -45,6 +50,12 @@ API --> User: Simulation status (finished)
 ```
 
 Currently, the Orchestrator is based on [RQ](https://python-rq.org/docs/); a Kubernetes-based solution is planned (each task to generate a new worker pod, which is destroyed upon task completion).
+
+Note that in the above figure, we precompute the KPI results to display. In fact, the stored objects in the database are entire [Plotly figures converted into `dict` form](https://plotly.com/python/creating-and-updating-figures/#converting-graph-objects-to-dictionaries-and-json). This greatly reduces page load time when viewing simulation results via the frontend service.
+
+```{caution}
+A major drawback of the above method is that updates to the KPIs displayed in the frontend may break compatibility with older simulation results.
+```
 
 ## Simulation processes
 

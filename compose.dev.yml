@@ -1,9 +1,6 @@
 services:
   webproxy:
     image: "ghcr.io/cam-digital-hospitals/monorepo-webproxy"
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
     depends_on:
       - docs
       - frontend
@@ -15,9 +12,6 @@ services:
   # FastAPI -- DES service
   des-api:
     image: "ghcr.io/cam-digital-hospitals/monorepo-des-api"
-    build:
-      context: ./dighosp-des
-      dockerfile: api.Dockerfile
     environment:
       FASTAPI_ROOT: "/api/des"
       MONGO_URL: mongo
@@ -32,18 +26,12 @@ services:
   # Internal documentation website
   docs:
     image: "ghcr.io/cam-digital-hospitals/monorepo-docs"
-    build:
-      context: ./dighosp-docs
-      dockerfile: Dockerfile
+    ports:
+      - 8888:80
   
   # Public frontend (Dashboard)
   frontend:
     image: ghcr.io/cam-digital-hospitals/monorepo-frontend
-    build:
-      context: ./dighosp-frontend
-      additional_contexts:
-        assets: ./assets
-      dockerfile: Dockerfile
     environment:
       DASH_BASE_PATHNAME: "/frontend/"
       TIMEOUT: 120
@@ -56,9 +44,6 @@ services:
   des-worker:
     scale: 8
     image: "ghcr.io/cam-digital-hospitals/monorepo-des-worker"
-    build:
-      context: ./dighosp-des
-      dockerfile: des-worker.Dockerfile
     depends_on:
       - redis
     environment:
@@ -106,6 +91,8 @@ services:
     secrets:
       - mongo-root-pw
       - mongo-pw
+    ports:
+      - 8081:8081
   
   # A separate database for managing worker tasks -- used by the 'rq' Python package.
   redis:

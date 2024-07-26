@@ -3,14 +3,34 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
+from pathlib import Path
+
+import toml
+from packaging.version import Version
+
+# APP VERSION
+APP_VERSION = None
+try:
+    path = Path(__file__) / '../../pyproject.toml'
+    path = path.resolve()
+    data = toml.load(path)
+    if 'project' in data and 'version' in data['project']:
+        APP_VERSION = Version(data['project']['version'])
+    elif 'tool' in data and 'poetry' in data['tool'] and 'version' in data['tool']['poetry']:
+        APP_VERSION = Version(data['tool']['poetry']['version'])
+except Exception:
+    APP_VERSION = None
+
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Digital Hospitals \u2014 Internal documentation'
 copyright = '2024, Digital Hospitals group, Institute for Manufacturing'
 author = 'Yin Chi Chan; Anandarup Mukherjee; Rohit Krishnan'
-version = '0.1.1'    # Displayed in sidebar
-release = '0.1.1a0'  # Full version number
+if APP_VERSION is not None:
+    version = str(APP_VERSION.base_version)    # Displayed in sidebar
+    release = str(APP_VERSION)  # Full version number
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

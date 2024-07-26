@@ -4,6 +4,7 @@
 
 alias dprune="docker system prune --volumes"
 
+alias bake="pushd `git root`; docker buildx bake; popd"
 alias dev="docker compose -f `git root`/compose.dev.yml"
 alias prod="docker compose -f `git root`/compose.prod.yml"
 
@@ -15,13 +16,22 @@ dpush-latest() {
     docker images --format "{{.Repository}}:{{.Tag}}" "ghcr.io/cam-dig*/*:latest" | xargs -n1 docker push
 }
 
+# Assign tag to all local images tagged "latest"
 dassign() {
     docker images --format "{{.Repository}}" "ghcr.io/cam-dig*/*:latest" | sed 's/:latest//g' | xargs -I {} docker tag {} {}:$@
+}
+
+# Pull images, based on the list of local images with the "latest tag". Supplying an argument
+# allows for tags other than "latest" to be pulled.
+dpull() {
+    docker images --format "{{.Repository}}" "ghcr.io/cam-dig*/*:latest" | xargs -I {} docker pull {}:${@:-latest}
 }
 
 dpush-tag() {
     docker image ls --format "{{.Repository}}:{{.Tag}}" "ghcr.io/cam-dig*/*:$@" | xargs -n1 docker push
 }
+
+alias test-gh-latest="dpull && prod down && prod up -d"
 
 ###############
 #  GIT

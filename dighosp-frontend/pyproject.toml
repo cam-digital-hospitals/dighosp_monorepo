@@ -24,6 +24,7 @@ gunicorn = "^22.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pylint = "^3.2.5"
+ipykernel = "^6.29.5"
 
 [build-system]
 requires = ["poetry-core"]

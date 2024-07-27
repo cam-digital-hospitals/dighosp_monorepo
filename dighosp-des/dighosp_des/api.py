@@ -17,9 +17,9 @@ from pydantic.functional_validators import AfterValidator
 from pymongo import MongoClient
 from rq import Queue
 
-from .conf import MONGO_CLIENT_ARGS, APP_VERSION
+from .conf import APP_VERSION, MONGO_CLIENT_ARGS
 from .config import Config
-from .kpis import lab_tats_fig, utilisation_fig, wips_fig
+from .kpis import lab_tats_fig, lab_tats_table, utilisation_fig, utilisation_table, wips_fig
 from .model import Model
 from .redis_worker import RedisSingleton
 
@@ -209,10 +209,12 @@ def save_dash_objs(job_id: ObjectIdStr):
     data = [get_result(job_id, idx) for idx in range(n)]
     kpi_objs = {
         'utilisation': utilisation_fig(data),
+        'utilisation_table': utilisation_table(data),
         'wip': wips_fig(data, wip='Total WIP'),
-        'tat': lab_tats_fig(data)
+        'tat': lab_tats_fig(data),
+        'tat_table': lab_tats_table(data)
     }
-    
+
     with MongoClient(**MONGO_CLIENT_ARGS) as client:
         coll = client['sim']['sim_jobs']
         obj = coll.find_one({'_id': ObjectId(job_id)})
@@ -221,17 +223,18 @@ def save_dash_objs(job_id: ObjectIdStr):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"No simulation job with ObjectId {job_id}."
             )
-        
+
         output_bytes = orjson.dumps(kpi_objs)
 
         fs = GridFS(client['sim'])
         obj_id = fs.put(output_bytes)
-        
+
         coll.find_one_and_update(
             filter={'_id': ObjectId(job_id)},
             update={'$set': {'results_kpi_obj_id': str(obj_id)}}
         )
     return obj_id
+
 
 @app.get(
     '/jobs/{job_id}/results/dash_objs',
@@ -251,10 +254,11 @@ def get_dash_objs(job_id: ObjectIdStr):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"No simulation job with ObjectId {job_id}."
             )
-        
+
         fs = GridFS(client['sim'])
         obj_id = ObjectId(obj['results_kpi_obj_id'])
         return json.load(fs.get(obj_id))
+
 
 @app.get(
     '/jobs',

@@ -28,7 +28,7 @@ def app_main():
         style={'max-width': '1600px'}
     ) as ret:
         with dbc.NavbarSimple(
-            brand='Digital Hospitals Demo',
+            brand=f'Digital Hospitals Demo v{conf.APP_VERSION.base_version}',
             brand_href=dash.get_relative_path('/#'),
             color='primary',
             dark=True,
@@ -47,8 +47,10 @@ def app_main():
                         href=dash.get_relative_path(service_data['href'])
                     )
             with dbc.DropdownMenu(nav=True, in_navbar=True, label='Developer'):
-                yield dbc.DropdownMenuItem("Docs", href='/docs', external_link=True)
-                yield dbc.DropdownMenuItem("MongoDB admin", href='/mongoadmin', external_link=True)
+                yield dbc.DropdownMenuItem(
+                    "Docs", href='/docs', external_link=True, target='_blank')
+                yield dbc.DropdownMenuItem(
+                    "MongoDB admin", href='/mongoadmin', external_link=True, target='_blank')
         yield dash.page_container
     return ret
 

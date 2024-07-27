@@ -46,15 +46,21 @@ def layout(job_id: str):
 @composition
 def populate_card(job_id: str):
     """Generate the Card layout showing KPIs for the simulation job."""
-    fig_data = get_kpi_figs(job_id)
+    kpi_objs = get_kpi_objs(job_id)
 
     with dbc.Card(class_name='mb-3') as ret1:
         with dbc.CardBody():
-            yield dcc.Graph(figure=fig_data['tat'])
+            yield html.H3('Lab Turnaround Times')
+            yield dbc.Table.from_dataframe(
+                pd.DataFrame(kpi_objs['tat_table']),
+                striped=True, bordered=True, hover=True
+            )
+            yield dcc.Graph(figure=kpi_objs['tat'])
 
     with dbc.Card(class_name='mb-3') as ret2:
         with dbc.CardBody():
-            yield dcc.Graph(figure=fig_data['wip'])
+            yield html.H3('Work in Progress')
+            yield dcc.Graph(figure=kpi_objs['wip'])
             n = get_num_reps(job_id)
             yield html.P(f"""\
 Bands denote the lower and upper deciles (light blue) and quantiles (dark blue); the black line \
@@ -62,7 +68,12 @@ denotes the median ({n} simulation runs).""")
 
     with dbc.Card(class_name='mb-3') as ret3:
         with dbc.CardBody():
-            yield dcc.Graph(figure=fig_data['utilisation'])
+            yield html.H3('Resource Utilisation')
+            yield dbc.Table.from_dataframe(
+                pd.DataFrame(kpi_objs['utilisation_table']),
+                striped=True, bordered=True, hover=True
+            )
+            yield dcc.Graph(figure=kpi_objs['utilisation'])
 
     return [ret1, ret2, ret3]
 
@@ -78,7 +89,7 @@ def get_num_reps(job_id: str) -> dict:
 
 
 
-def get_kpi_figs(job_id: str) -> dict:
+def get_kpi_objs(job_id: str) -> dict:
     """Get the KPI-related figure objects for a given job."""
     url = f'{DES_FASTAPI_URL}/jobs/{job_id}/results/dash_objs'
     response = requests.get(url, timeout=100)

@@ -60,6 +60,18 @@ def utilisation_fig(data):
     fig.update_layout(title='Resource utilisation')
     return json.loads(fig.to_json())
 
+def utilisation_table(data):
+    """Create a table of mean resource utilisation by resource."""
+    res_names = list(data[0]['resources']['n_claimed'].keys())
+    res_means = [
+        np.mean([mean_claimed(dd, res)/mean_available(dd, res) for dd in data])
+        for res in res_names
+    ]
+    return {
+        'Resource': res_names,
+        'Utilisation': [f'{x:.3%}' for x in res_means]
+    }
+
 
 def wip_df(data, wip):
     """Get the hourly means for a given WIP counter, for a single simulation replication."""
@@ -143,3 +155,19 @@ def lab_tats_fig(data):
     fig.update_xaxes(title='Days')
     fig.update_yaxes(title='Probability')
     return json.loads(fig.to_json())
+
+
+def lab_tats_table(data):
+    """Create a table of lab turnaround times, showing the percentage of specimens completed within
+    7, 10, 14, or 21 days."""
+    lab_tats = [[
+        (x['qc_end']-x['reception_start'])/24.0
+        for x in data[n]['specimen_data'].values()
+        if 'reporting_end' in x
+    ] for n in range(len(data))]
+    lab_tats = np.array(list(chain(*lab_tats)))
+    days = [7, 10, 14, 21]
+    return {
+        'Days': days,
+        'Specimens completed': [f'{np.mean(lab_tats < x):.3%}' for x in days]
+    }

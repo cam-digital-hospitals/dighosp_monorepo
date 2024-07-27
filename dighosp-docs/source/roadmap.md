@@ -2,15 +2,6 @@
 
 ## 0.1
 
-### 0.1.1
-- Modify DES service to precompute KPIs for improved page loading speed
-    - Actually, a entire Plotly Figure object is saved in `dict` form
-    - [x] Run automatically when all simulation replications finished, save results in database
-    - [x] New API endpoint for fetching precomputed KPI values from database; modify frontend accordingly
-    - Keep or remove full simulation results???
-        - If kept, can recompute KPIs if changes are made (e.g. to add more KPIs to the output)
-        - [x] Add version numbers to saved KPI values
-
 ### 0.1.2
 - [ ] Containerise the DES workers
     - See: https://github.com/yinchi/container-queue

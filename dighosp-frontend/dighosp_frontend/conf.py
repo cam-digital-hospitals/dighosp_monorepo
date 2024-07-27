@@ -2,7 +2,9 @@
 import os
 from pathlib import Path
 
+import toml
 from dotenv import find_dotenv, load_dotenv
+from packaging.version import Version
 
 env_get = os.environ.get
 
@@ -23,3 +25,15 @@ BASE_PATH = env_get('DASH_BASE_PATHNAME', '/')
 if __name__ == "__main__":
     print(ASSETS_DIRNAME)
     print(ASSETS_DIRNAME.is_dir())
+
+
+# APP VERSION
+APP_VERSION = None
+try:
+    data = toml.load('/app/pyproject.toml')
+    if 'project' in data and 'version' in data['project']:
+        APP_VERSION = Version(data['project']['version'])
+    elif 'tool' in data and 'poetry' in data['tool'] and 'version' in data['tool']['poetry']:
+        APP_VERSION = Version(data['tool']['poetry']['version'])
+except Exception:
+    pass  # Keep default of None
